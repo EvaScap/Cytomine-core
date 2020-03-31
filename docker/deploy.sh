@@ -15,7 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+postgres_host="postgresql"
+postgres_port="5432"
 
+# wait for the postgres docker to be running
+while ! pg_isready -h $postgres_host -p $postgres_port ; do
+   echo "Postgres is unavailable - sleeping"
+  sleep 5
+done
+
+ echo "Postgres is up - execution"
 CORE_URL=$(cat /usr/share/tomcat7/.grails/cytomineconfig.groovy | grep grails.serverURL)
 CORE_URL=(${CORE_URL//=/ })
 CORE_URL=${CORE_URL[1]}

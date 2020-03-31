@@ -14,22 +14,11 @@
 # limitations under the License.
 #
 
-ARG FROM_NAMESPACE
-ARG FROM_VERSION
-FROM ${FROM_NAMESPACE}/tomcat7:$FROM_VERSION
 
+FROM cytomineuliege/core:v2.0.0-rc.5
 
-RUN rm -r /var/lib/tomcat7/webapps/* && mkdir -p /usr/share/tomcat7/.grails
-
-ARG VERSION
-ARG NAMESPACE=Cytomine-ULiege
-ARG RELEASE_PATH=https://github.com/${NAMESPACE}/Cytomine-Core/releases/download/v${VERSION}
-ADD ${RELEASE_PATH}/core.war /var/lib/tomcat7/webapps/ROOT.war
-ADD ${RELEASE_PATH}/restapidoc.json /var/lib/tomcat7/restapidoc.json
-
-RUN touch /tmp/addHosts.sh
-COPY setenv.sh /usr/share/tomcat7/bin/setenv.sh
-RUN chmod +x /usr/share/tomcat7/bin/setenv.sh
+RUN apt-get update
+RUN apt-get install postgresql-client -y
 COPY deploy.sh /tmp/deploy.sh
 RUN chmod +x /tmp/deploy.sh
 
